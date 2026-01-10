@@ -23,9 +23,28 @@ namespace CheckInApp
                 var item = new CheckIn
                 {
                     Name = EntryName.Text,
-                    CheckInTime = DateTimeOffset.UtcNow,
+                    CheckInTime = DateTimeOffset.Now,
                 };
                 var result = Task.FromResult(_repository.SaveItemAsync(item));
+                EntryName.Text = "";
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error saving CheckIn item");
+            }
+        }
+
+        private void CheckOutClicked(object? sender, EventArgs e)
+        {
+            try
+            {
+                var item = new CheckIn
+                {
+                    Name = EntryName.Text,
+                    CheckOutTime = DateTimeOffset.Now,
+                };
+                var result = Task.FromResult(_repository.SaveItemAsync(item));
+                EntryName.Text = "";
             }
             catch (Exception ex)
             {

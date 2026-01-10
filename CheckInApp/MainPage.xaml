@@ -18,13 +18,21 @@
                 x:Name="EntryName"
                 Text=""
             />
-            
+
             <Button
                 x:Name="CheckIn"
                 Text="Check In" 
                 SemanticProperties.Hint="Check in today"
                 Clicked="CheckInClicked"
                 HorizontalOptions="Start" />
+
+            <Button
+                 x:Name="CheckOut"
+                 Text="Check Out" 
+                 SemanticProperties.Hint="Check out today"
+                 Clicked="CheckOutClicked"
+                 HorizontalOptions="Start" />
+
         </VerticalStackLayout>
     </ScrollView>
 

@@ -1,6 +1,6 @@
 ﻿using CheckInApp.Models;
-using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Logging;
+using static CheckInApp.Data.Constants;
 
 namespace CheckInApp.Data;
 
@@ -20,6 +20,8 @@ public class CheckInRepository
     {
         _logger = logger;
     }
+
+    /*
 
     /// <summary>
     /// Initializes the database connection and creates the CheckIn table if it does not exist.
@@ -217,5 +219,21 @@ WHERE ID = @ID";
         await dropTableCmd.ExecuteNonQueryAsync();
 
         _hasBeenInitialized = false;
+    }
+
+    */
+
+    public async Task<int> SaveItemAsync(CheckIn item)
+    {
+        if (!_hasBeenInitialized)
+        {
+            _hasBeenInitialized = true;
+        }
+        var checkIn = item.CheckInTime == null ? "null" : item.CheckInTime?.ToString("O");
+        var checkOut = item.CheckOutTime == null ? "null" : item.CheckOutTime?.ToString("O");
+        //var data = $"Name=\"{item.Name}\",CheckIn=\"{checkIn}\",CheckOut=\"{checkOut}\"";
+        var data = System.Text.Json.JsonSerializer.Serialize(item) + Environment.NewLine;
+        await Task.Run(() => File.AppendAllText(DataLogPath, data));
+        return 1;
     }
 }

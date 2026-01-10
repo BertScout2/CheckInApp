@@ -3,8 +3,10 @@
 public static class Constants
 {
     public const string DatabaseFilename = "CheckInDB.db3";
-    public static string? DatabaseDirPath;
-    public static string? DatabasePath;
+    public const string DataLogFilename = "CheckIn.log";
+    public static string DatabaseDirPath = "";
+    public static string DatabasePath = "";
+    public static string DataLogPath = "";
 
     public static void InitDatabasePath()
     {
@@ -16,5 +18,6 @@ public static class Constants
         }
 #endif
         DatabasePath = $"Data Source={Path.Combine(DatabaseDirPath, DatabaseFilename)}";
+        DataLogPath = Path.Combine(DatabaseDirPath, DataLogFilename);
     }
 }
