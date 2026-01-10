@@ -73,8 +73,8 @@ public class CheckInRepository
             {
                 ID = reader.GetInt32(0),
                 Name = reader.GetString(1),
-                CheckInTime = reader.IsDBNull(2) ? null : DateTime.Parse(reader.GetString(2)),
-                CheckOutTime = reader.IsDBNull(3) ? null : DateTime.Parse(reader.GetString(3)),
+                CheckInTime = reader.IsDBNull(2) ? null : DateTimeOffset.Parse(reader.GetString(2)),
+                CheckOutTime = reader.IsDBNull(3) ? null : DateTimeOffset.Parse(reader.GetString(3)),
             });
         }
 
@@ -105,8 +105,8 @@ public class CheckInRepository
             {
                 ID = reader.GetInt32(0),
                 Name = reader.GetString(1),
-                CheckInTime = reader.IsDBNull(2) ? null : DateTime.Parse(reader.GetString(2)),
-                CheckOutTime = reader.IsDBNull(3) ? null : DateTime.Parse(reader.GetString(3)),
+                CheckInTime = reader.IsDBNull(2) ? null : DateTimeOffset.Parse(reader.GetString(2)),
+                CheckOutTime = reader.IsDBNull(3) ? null : DateTimeOffset.Parse(reader.GetString(3)),
             });
         }
 
@@ -133,8 +133,8 @@ public class CheckInRepository
             {
                 ID = reader.GetInt32(0),
                 Name = reader.GetString(1),
-                CheckInTime = reader.IsDBNull(2) ? null : DateTime.Parse(reader.GetString(2)),
-                CheckOutTime = reader.IsDBNull(3) ? null : DateTime.Parse(reader.GetString(3)),
+                CheckInTime = reader.IsDBNull(2) ? null : DateTimeOffset.Parse(reader.GetString(2)),
+                CheckOutTime = reader.IsDBNull(3) ? null : DateTimeOffset.Parse(reader.GetString(3)),
             };
         }
 
@@ -154,32 +154,36 @@ public class CheckInRepository
         var saveCmd = connection.CreateCommand();
         if (item.ID == 0)
         {
-            saveCmd.CommandText = @"
-            INSERT INTO CheckIn (Name, CheckInTime, CheckOutTime)
-            VALUES (@Name, @CheckInTime, @CheckOutTime);
-            SELECT last_insert_rowid();";
+            saveCmd.CommandText = 
+@"
+INSERT INTO CheckIn (Name, CheckInTime, CheckOutTime)
+VALUES (@Name, @CheckInTime, @CheckOutTime);
+--SELECT last_insert_rowid();
+";
         }
         else
         {
-            saveCmd.CommandText = @"
-            UPDATE CheckIn
-            SET Name = @Name,
-                CheckInTime = @CheckInTime,
-                CheckOutTime = @CheckOutTime
-            WHERE ID = @ID";
+            saveCmd.CommandText = 
+@"
+UPDATE CheckIn
+SET Name = @Name,
+CheckInTime = @CheckInTime,
+CheckOutTime = @CheckOutTime
+WHERE ID = @ID";
             saveCmd.Parameters.AddWithValue("@ID", item.ID);
         }
 
         saveCmd.Parameters.AddWithValue("@Name", item.Name);
-        saveCmd.Parameters.AddWithValue("@CheckInTime", item.CheckInTime);
-        saveCmd.Parameters.AddWithValue("@CheckOutTime", item.CheckOutTime);
+        saveCmd.Parameters.AddWithValue("@CheckInTime", item.CheckInTime?.ToString("O"));
+        saveCmd.Parameters.AddWithValue("@CheckOutTime", item.CheckOutTime?.ToString("O"));
 
-        var result = saveCmd.ExecuteScalar();
+        var result = await saveCmd.ExecuteScalarAsync();
         if (item.ID == 0)
         {
             item.ID = Convert.ToInt32(result);
         }
 
+        connection.Close();
         return item.ID;
     }
 

@@ -23,9 +23,9 @@ namespace CheckInApp
                 var item = new CheckIn
                 {
                     Name = EntryName.Text,
-                    CheckInTime = DateTime.Now,
+                    CheckInTime = DateTimeOffset.UtcNow,
                 };
-                var count = _repository.SaveItem(item);
+                var result = Task.FromResult(_repository.SaveItemAsync(item));
             }
             catch (Exception ex)
             {
