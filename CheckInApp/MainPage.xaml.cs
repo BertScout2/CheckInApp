@@ -1,6 +1,7 @@
 ﻿using CheckInApp.Data;
 using CheckInApp.Models;
 using Microsoft.Extensions.Logging;
+using static CheckInApp.Data.Constants;
 
 namespace CheckInApp
 {
@@ -14,6 +15,7 @@ namespace CheckInApp
             InitializeComponent();
             _repository = checkInRepository;
             _logger = logger;
+            InitDatabasePath();
         }
 
         private void EntryNameChanged(object? sender, EventArgs e)
