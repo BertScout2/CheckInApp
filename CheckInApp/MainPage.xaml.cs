@@ -1,24 +1,36 @@
-﻿namespace CheckInApp
+﻿using CheckInApp.Data;
+using CheckInApp.Models;
+using Microsoft.Extensions.Logging;
+
+namespace CheckInApp
 {
     public partial class MainPage : ContentPage
     {
-        int count = 0;
+        private readonly CheckInRepository _repository;
+        private readonly ILogger _logger;
 
-        public MainPage()
+        public MainPage(CheckInRepository checkInRepository, ILogger<CheckInRepository> logger)
         {
             InitializeComponent();
+            _repository = checkInRepository;
+            _logger = logger;
         }
 
-        private void OnCounterClicked(object? sender, EventArgs e)
+        private void CheckInClicked(object? sender, EventArgs e)
         {
-            count++;
-
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
-            else
-                CounterBtn.Text = $"Clicked {count} times";
-
-            SemanticScreenReader.Announce(CounterBtn.Text);
+            try
+            {
+                var item = new CheckIn
+                {
+                    Name = EntryName.Text,
+                    CheckInTime = DateTime.Now,
+                };
+                var count = _repository.SaveItem(item);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error saving CheckIn item");
+            }
         }
     }
 }
