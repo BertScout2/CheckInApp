@@ -8,30 +8,59 @@
             Padding="30,0"
             Spacing="25">
 
+            <Label
+                Text="BERT Meeting Check-In / Check-Out"
+                HorizontalOptions="Center"
+                FontSize="Large"
+                />
+
             <Image
                 Source="dotnet_bot.png"
                 HeightRequest="185"
                 Aspect="AspectFit"
-                SemanticProperties.Description="dot net bot in a submarine number ten" />
+                SemanticProperties.Description="dot net bot in a submarine number ten"
+                />
+
+            <Label
+                Text="Enter your name"
+                HorizontalOptions="Center"
+                />
 
             <Entry
                 x:Name="EntryName"
                 Text=""
-            />
+                WidthRequest="300"
+                HorizontalOptions="Center"
+                SemanticProperties.Description="Enter your name"
+                TextChanged="EntryNameChanged"
+                />
 
             <Button
                 x:Name="CheckIn"
                 Text="Check In" 
+                WidthRequest="100"
                 SemanticProperties.Hint="Check in today"
                 Clicked="CheckInClicked"
-                HorizontalOptions="Start" />
+                HorizontalOptions="Center"
+                SemanticProperties.Description="Check in button"
+                />
 
             <Button
-                 x:Name="CheckOut"
-                 Text="Check Out" 
-                 SemanticProperties.Hint="Check out today"
-                 Clicked="CheckOutClicked"
-                 HorizontalOptions="Start" />
+                x:Name="CheckOut"
+                Text="Check Out" 
+                WidthRequest="100"
+                SemanticProperties.Hint="Check out today"
+                Clicked="CheckOutClicked"
+                HorizontalOptions="Center"
+                SemanticProperties.Description="Check out button"
+                />
+
+            <Label
+                x:Name="LabelResult"
+                Text=""
+                HorizontalOptions="Center"
+                SemanticProperties.Description="Result"
+                />
 
         </VerticalStackLayout>
     </ScrollView>

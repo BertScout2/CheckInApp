@@ -16,6 +16,14 @@ namespace CheckInApp
             _logger = logger;
         }
 
+        private void EntryNameChanged(object? sender, EventArgs e)
+        {
+            if (EntryName.Text != "")
+            {
+                LabelResult.Text = "";
+            }
+        }
+        
         private void CheckInClicked(object? sender, EventArgs e)
         {
             try
@@ -26,6 +34,7 @@ namespace CheckInApp
                     CheckInTime = DateTimeOffset.Now,
                 };
                 var result = Task.FromResult(_repository.SaveItemAsync(item));
+                LabelResult.Text = $"{item.Name} has checked in.";
                 EntryName.Text = "";
             }
             catch (Exception ex)
@@ -44,6 +53,7 @@ namespace CheckInApp
                     CheckOutTime = DateTimeOffset.Now,
                 };
                 var result = Task.FromResult(_repository.SaveItemAsync(item));
+                LabelResult.Text = $"{item.Name} has checked out.";
                 EntryName.Text = "";
             }
             catch (Exception ex)
