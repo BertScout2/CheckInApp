@@ -23,6 +23,14 @@ public class CheckInRepository
 
     /*
 
+    private const SQLiteOpenFlags Flags =
+        // open the database in read/write mode
+        SQLiteOpenFlags.ReadWrite |
+        // create the database if it doesn't exist
+        SQLiteOpenFlags.Create |
+        // enable multi-threaded database access
+        SQLiteOpenFlags.SharedCache;
+
     /// <summary>
     /// Initializes the database connection and creates the CheckIn table if it does not exist.
     /// </summary>
@@ -31,7 +39,7 @@ public class CheckInRepository
         if (_hasBeenInitialized)
             return;
 
-        await using var connection = new SqliteConnection(Constants.DatabasePath);
+        await using var connection = new SqliteConnection(Constants.DatabasePath, Flags);
         await connection.OpenAsync();
 
         try
